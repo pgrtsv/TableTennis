@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:TableTennis.Views"
+             xmlns:viewModels="clr-namespace:TableTennis.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TableTennis.Views.Contestants">
+    <DockPanel Grid.IsSharedSizeScope="True">
+        <Border DockPanel.Dock="Top" Classes="menu">
+            <WrapPanel>
+                <ToggleButton x:Name="AddToggleButton" Content="Добавить спортсмена" />
+                <ToggleButton x:Name="SortToggleButton" Content="Сортировать" />
+            </WrapPanel>
+        </Border>
+        <views:AddContestant x:Name="AddContestant" DockPanel.Dock="Top" />
+        <views:SortingPanel x:Name="SortingPanel" DockPanel.Dock="Top" />
+        <Border Classes="table_row" DockPanel.Dock="Top">
+            <Grid Classes="table_header">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Rank" Width="Auto" />
+                    <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
+                    <ColumnDefinition SharedSizeGroup="Rating" Width="Auto" />
+                    <ColumnDefinition SharedSizeGroup="GamesTotal" Width="Auto" />
+                    <ColumnDefinition SharedSizeGroup="Wins" Width="Auto" />
+                    <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
+                    <ColumnDefinition SharedSizeGroup="WLRatio" Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Воинское звание" />
+                <TextBlock Grid.Column="1" Text="ФИО" />
+                <TextBlock Grid.Column="2" Text="Рейтинг" />
+                <TextBlock Grid.Column="3" Text="Сыграно матчей" />
+                <TextBlock Grid.Column="4" Text="Побед" />
+                <TextBlock Grid.Column="5" Text="Поражений" />
+                <TextBlock Grid.Column="6" Text="W/L" />
+            </Grid>
+        </Border>
+        <ListBox x:Name="ContestantsListBox" Classes="contestants" VirtualizationMode="None">
+            <ListBox.Styles>
+                <Style Selector="TextBlock">
+                    <Setter Property="Margin" Value="5,0" />
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="viewModels:ContestantReadViewModel">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Rank" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="Rating" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="GamesTotal" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="Wins" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="WLRatio" Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Contestant.Rank}"
+                                   Margin="0,0,5,0" />
+                        <TextBlock Grid.Column="1" Text="{Binding Contestant.Name}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Text="{Binding MonthlyScore}"
+                            Margin="5,0,0,0" />
+                        <TextBlock
+                            Grid.Column="3"
+                            Text="{Binding Statistics.GamesTotal}" />
+                        <TextBlock
+                            Grid.Column="4"
+                            Text="{Binding Statistics.Wins}" />
+                        <TextBlock
+                            Grid.Column="5"
+                            Text="{Binding Statistics.Losses}" />
+                        <TextBlock
+                            Grid.Column="6"
+                            Text="{Binding Statistics.WinLossRatioPercentage, StringFormat=\{0:F1\}%}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>

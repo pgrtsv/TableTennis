@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:TableTennis.ViewModels"
+             xmlns:views="clr-namespace:TableTennis.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TableTennis.Views.Games">
+    <UserControl.Resources>
+        <views:WinLoseBrushConverter x:Key="WinLoseBrushConverter" />
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="ListBox.games TextBlock.first">
+            <Setter Property="Foreground"
+                    Value="{Binding IsFirstContestantWinner, 
+                    Converter={StaticResource WinLoseBrushConverter}}" />
+        </Style>
+        <Style Selector="ListBox.games TextBlock.second">
+            <Setter Property="Foreground"
+                    Value="{Binding !IsFirstContestantWinner, 
+                    Converter={StaticResource WinLoseBrushConverter}}" />
+        </Style>
+    </UserControl.Styles>
+    <DockPanel Grid.IsSharedSizeScope="True">
+        <Border Classes="menu" DockPanel.Dock="Top">
+            <WrapPanel>
+                <ToggleButton x:Name="AddGameResultToggleButton" Content="Добавить матч" />
+                <ToggleButton x:Name="SortToggleButton" Content="Сортировать" />
+                <ToggleButton x:Name="FilterToggleButton" Content="Фильтровать" />
+            </WrapPanel>
+        </Border>
+        <views:AddGameResult x:Name="AddGameResult" DockPanel.Dock="Top" />
+        <views:SortingPanel x:Name="SortingPanel" DockPanel.Dock="Top" />
+        <views:FilterGameResults x:Name="FilterGameResults" DockPanel.Dock="Top" />
+        <Border Classes="table_row" DockPanel.Dock="Top">
+            <Grid Classes="table_header">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="DateTime" />
+                    <ColumnDefinition SharedSizeGroup="FirstContestant" />
+                    <ColumnDefinition SharedSizeGroup="SecondContestant" />
+                    <ColumnDefinition SharedSizeGroup="Score" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Дата и время матча" />
+                <TextBlock Grid.Column="1" Text="Первый спортсмен" />
+                <TextBlock Grid.Column="2" Text="Второй спортсмен" />
+                <TextBlock Grid.Column="3" Text="Счет" />
+            </Grid>
+        </Border>
+        <ListBox x:Name="GamesListBox" Classes="games" VirtualizationMode="None">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="viewModels:GameResultReadViewModel">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="DateTime" />
+                            <ColumnDefinition SharedSizeGroup="FirstContestant" />
+                            <ColumnDefinition SharedSizeGroup="SecondContestant" />
+                            <ColumnDefinition SharedSizeGroup="Score" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="{Binding DateTime,
+                                StringFormat=\{0:dd.MM.yyyy hh:mm\}}"
+                            Margin="0, 0,5,0" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Classes="first"
+                            Text="{Binding FirstContestantInfo}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Classes="second"
+                            Text="{Binding SecondContestantInfo}" />
+                        <StackPanel Orientation="Horizontal" 
+                                    HorizontalAlignment="Center"
+                                    Grid.Column="3" Margin="5, 0,0,0">
+                            <TextBlock Classes="first" Text="{Binding FirstContestantScore}" />
+                            <TextBlock Text=":" />
+                            <TextBlock Classes="second" Text="{Binding SecondContestantScore}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TableTennis.Views.FilterGameResults">
+    <Border Classes="top_panel">
+        <WrapPanel>
+            <CheckBox x:Name="FilterByContestantCheckBox" VerticalContentAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="По спортсмену: " VerticalAlignment="Center" />
+                    <AutoCompleteBox x:Name="ContestantAutoCompleteBox" FilterMode="StartsWithOrdinal"
+                                     VerticalAlignment="Center" />
+                </StackPanel>
+            </CheckBox>
+        </WrapPanel>
+    </Border>
+</UserControl>

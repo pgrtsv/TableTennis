@@ -1,0 +1,174 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:rxui="http://reactiveui.net"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TableTennis.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TableTennis.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Background="{DynamicResource ThemeBackgroundBrush}"
+        FontFamily="/Assets/Fonts#Roboto"
+        FontSize="20"
+        Title="TableTennis">
+    <Window.Resources>
+        <ResourceDictionary>
+            <CornerRadius x:Key="ControlCornerRadius">0</CornerRadius>
+            <CornerRadius x:Key="OverlayCornerRadius">0</CornerRadius>
+            <Color x:Key="SystemAccentColor">#ff6f00</Color>
+            <Color x:Key="LightForegroundColor">#ffffff</Color>
+            <Color x:Key="SystemAccentColorLight1">#FFAE4B</Color>
+            <Color x:Key="SystemControlHighlightListAccentHighBrush">#FFAE4B</Color>
+            <SolidColorBrush x:Key="TextControlSelectionHighlightColor" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelected" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPointerOver" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPressed" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillChecked" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPointerOver" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ButtonForeground" Color="{StaticResource LightForegroundColor}" />
+            <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{StaticResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="{StaticResource SystemAccentColorLight1}"></SolidColorBrush>
+            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="Transparent" />
+            <SolidColorBrush x:Key="RepeatButtonBackgroundDisabled" Color="Transparent" />
+            <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent" />
+            <Thickness x:Key="ButtonBorderThemeThickness">0</Thickness>
+            <Thickness x:Key="ComboBoxDropdownBorderThickness">0,0,0,1</Thickness>
+            <Thickness x:Key="TextControlBorderThemeThickness">0,0,0,1</Thickness>
+            <Thickness x:Key="TextControlThemePadding">0</Thickness>
+            <system:Double x:Key="ControlContentThemeFontSize">20</system:Double>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Styles>
+        <Style Selector="Border.title">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Background" Value="#24292e" />
+        </Style>
+        <Style Selector="Border.title > TextBlock">
+            <Setter Property="FontSize" Value="40" />
+            <Setter Property="Foreground" Value="#ffffff" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="Padding" Value="10" />
+            <!-- <Setter Property="FontFamily" Value="/Assets/Fonts#Rubik Mono One" /> -->
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="#ffffff"></Setter>
+        </Style>
+        <Style Selector="ListBox.menu">
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#ff6f00" />
+            <Setter Property="Foreground" Value="#ffffff" />
+        </Style>
+        <!--  Selected State  -->
+        <Style Selector="ListBox.menu > ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#24292e" />
+            <Setter Property="TextBlock.Foreground" Value="#ffffff"></Setter>
+        </Style>
+        <Style Selector="ListBox.menu TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextDecorations" Value="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+        </Style>
+        <Style Selector="ListBox.menu > ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="TextBlock.Foreground" Value="#babcbd" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ListBox.menu > ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#24292e" />
+        </Style>
+        <Style Selector="Border.menu">
+            <Setter Property="Background" Value="#fafbfc" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="#eaecef" />
+        </Style>
+        <Style Selector="Border.menu ToggleButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0,0,0,2" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+        <Style Selector="Border.menu ToggleButton /template/ ContentPresenter">
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="TextBlock.Foreground" Value="#000000" />
+        </Style>
+        <Style Selector="Border.menu ToggleButton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="#d1d5da" />
+        </Style>
+        <Style Selector="Border.menu ToggleButton:checked /template/ ContentPresenter">
+            <Setter Property="TextBlock.Foreground" Value="#000000" />
+            <Setter Property="TextBlock.FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="#ff6f00" />
+        </Style>
+        <Style Selector="Border.top_panel">
+            <Setter Property="Background" Value="#fafbfc" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="#eaecef" />
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="BorderBrush" Value="#ff6f00" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ComboBox:focus">
+            <Setter Property="BorderBrush" Value="#ff6f00" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="Border.table_row">
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="#eaecef"></Setter>
+        </Style>
+        <Style Selector="Grid.table_header > TextBlock">
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Medium" />
+        </Style>
+    </Window.Styles>
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+        <Border Classes="title" DockPanel.Dock="Top">
+            <TextBlock Text="Рейтинг по настольному теннису" />
+        </Border>
+        <ListBox Classes="menu" x:Name="MenuListBox" DockPanel.Dock="Top">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, Mode=OneTime}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <rxui:ViewModelViewHost x:Name="ViewModelViewHost" />
+    </DockPanel>
+</Window>

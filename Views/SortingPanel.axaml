@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="TableTennis.Views.SortingPanel">
+    <Border Classes="top_panel">
+        <StackPanel x:Name="SortStackPanel" Orientation="Horizontal" DockPanel.Dock="Top">
+            <TextBlock Text="Сортировать по: " VerticalAlignment="Center" />
+            <ComboBox x:Name="SortComboBox" MinWidth="200" VerticalAlignment="Center" />
+            <CheckBox x:Name="SortIsDescendingCheckBox" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                      Content="по убыванию" Margin="5" />
+        </StackPanel>
+    </Border>
+</UserControl>
