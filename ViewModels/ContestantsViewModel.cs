@@ -25,7 +25,7 @@ namespace TableTennis.ViewModels
                 new SortViewModel<ContestantReadViewModel>("количеству матчей", x => x.Statistics.GamesTotal),
                 new SortViewModel<ContestantReadViewModel>("количеству побед", x => x.Statistics.Wins),
                 new SortViewModel<ContestantReadViewModel>("количеству поражений", x => x.Statistics.Losses),
-                new SortViewModel<ContestantReadViewModel>("соотношению W/L", x => x.Statistics.WinLossRatio),
+                new SortViewModel<ContestantReadViewModel>("соотношению W/T", x => x.Statistics.WinTotalRatio),
                 new SortViewModel<ContestantReadViewModel>("рейтингу", x => x.MonthlyScore)
             };
             SelectedSortViewModel = SortViewModels.Last();

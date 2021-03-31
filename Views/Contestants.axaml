@@ -24,7 +24,7 @@
                     <ColumnDefinition SharedSizeGroup="GamesTotal" Width="Auto" />
                     <ColumnDefinition SharedSizeGroup="Wins" Width="Auto" />
                     <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="WLRatio" Width="Auto" />
+                    <ColumnDefinition SharedSizeGroup="WTRatio" Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Воинское звание" />
                 <TextBlock Grid.Column="1" Text="ФИО" />
@@ -32,7 +32,7 @@
                 <TextBlock Grid.Column="3" Text="Сыграно матчей" />
                 <TextBlock Grid.Column="4" Text="Побед" />
                 <TextBlock Grid.Column="5" Text="Поражений" />
-                <TextBlock Grid.Column="6" Text="W/L" />
+                <TextBlock Grid.Column="6" Text="W/T" />
             </Grid>
         </Border>
         <ListBox x:Name="ContestantsListBox" Classes="contestants" VirtualizationMode="None">
@@ -51,7 +51,7 @@
                             <ColumnDefinition SharedSizeGroup="GamesTotal" Width="Auto" />
                             <ColumnDefinition SharedSizeGroup="Wins" Width="Auto" />
                             <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
-                            <ColumnDefinition SharedSizeGroup="WLRatio" Width="Auto" />
+                            <ColumnDefinition SharedSizeGroup="WTRatio" Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Contestant.Rank}"
                                    Margin="0,0,5,0" />
@@ -71,7 +71,7 @@
                             Text="{Binding Statistics.Losses}" />
                         <TextBlock
                             Grid.Column="6"
-                            Text="{Binding Statistics.WinLossRatioPercentage, StringFormat=\{0:F1\}%}" />
+                            Text="{Binding Statistics.WinTotalRatioPercentage, StringFormat=\{0:F1\}%}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

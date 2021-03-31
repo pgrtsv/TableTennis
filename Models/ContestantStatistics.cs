@@ -8,15 +8,15 @@ namespace TableTennis.Models
     /// </summary>
     public sealed class ContestantStatistics
     {
-        private ContestantStatistics(Guid contestantGuid, int gamesTotal, int wins, int losses, double winLossRatio,
-            double winLossRationPercentage)
+        private ContestantStatistics(Guid contestantGuid, int gamesTotal, int wins, int losses, double winTotalRatio,
+            double winTotalRatioPercentage)
         {
             ContestantGuid = contestantGuid;
             GamesTotal = gamesTotal;
             Wins = wins;
             Losses = losses;
-            WinLossRatio = winLossRatio;
-            WinLossRatioPercentage = winLossRationPercentage;
+            WinTotalRatio = winTotalRatio;
+            WinTotalRatioPercentage = winTotalRatioPercentage;
         }
 
         /// <summary>
@@ -40,14 +40,14 @@ namespace TableTennis.Models
         public int Losses { get; }
         
         /// <summary>
-        /// Соотношение побед и поражений спортсмена.
+        /// Соотношение побед и всех матчей спортсмена.
         /// </summary>
-        public double WinLossRatio { get; }
+        public double WinTotalRatio { get; }
         
         /// <summary>
-        /// Соотношение побед и поражений спортсмена (в процентах).
+        /// Соотношение побед и всех матчей спортсмена (в процентах).
         /// </summary>
-        public double WinLossRatioPercentage { get; }
+        public double WinTotalRatioPercentage { get; }
         
         public static ContestantStatistics GetForContestant(GamesDb gamesDb, Guid contestantGuid)
         {
@@ -56,17 +56,17 @@ namespace TableTennis.Models
             var gamesTotal = gamesWithContestant.Length;
             var wins = gamesWithContestant.Count(result => result.GetWinnerGuid() == contestantGuid);
             var losses = gamesWithContestant.Length - wins;
-            var winLossRatio = losses == 0 ? wins : 1.0 * wins / losses;
-            var winLossRationPercentage = winLossRatio * 100;
+            var winTotalRatio = gamesTotal == 0 ? 0 : 1.0 * wins / gamesTotal;
+            var winTotalRatioPercentage = winTotalRatio * 100;
             return new ContestantStatistics(
                 contestantGuid,
                 gamesTotal,
                 wins,
                 losses,
-                winLossRatio,
-                winLossRationPercentage);
+                winTotalRatio,
+                winTotalRatioPercentage);
         }
 
-        public override string ToString() => $"Матчей: {GamesTotal}, побед: {Wins}, поражений: {Losses}, W/L: {WinLossRatio:F}";
+        public override string ToString() => $"Матчей: {GamesTotal}, побед: {Wins}, поражений: {Losses}, W/T: {WinTotalRatio:F}";
     }
 }
