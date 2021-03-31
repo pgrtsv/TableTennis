@@ -18,6 +18,7 @@
         <Border Classes="table_row" DockPanel.Dock="Top">
             <Grid Classes="table_header">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="RatingPosition" />
                     <ColumnDefinition SharedSizeGroup="Rank" Width="Auto" />
                     <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
                     <ColumnDefinition SharedSizeGroup="Rating" Width="Auto" />
@@ -26,13 +27,14 @@
                     <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
                     <ColumnDefinition SharedSizeGroup="WTRatio" Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Воинское звание" />
-                <TextBlock Grid.Column="1" Text="ФИО" />
-                <TextBlock Grid.Column="2" Text="Рейтинг" />
-                <TextBlock Grid.Column="3" Text="Сыграно матчей" />
-                <TextBlock Grid.Column="4" Text="Побед" />
-                <TextBlock Grid.Column="5" Text="Поражений" />
-                <TextBlock Grid.Column="6" Text="W/T" />
+                <TextBlock Text="Рейтинг, №" />
+                <TextBlock Grid.Column="1" Text="Воинское звание" />
+                <TextBlock Grid.Column="2" Text="ФИО" />
+                <TextBlock Grid.Column="3" Text="Рейтинг" />
+                <TextBlock Grid.Column="4" Text="Сыграно матчей" />
+                <TextBlock Grid.Column="5" Text="Побед" />
+                <TextBlock Grid.Column="6" Text="Поражений" />
+                <TextBlock Grid.Column="7" Text="W/T" />
             </Grid>
         </Border>
         <ListBox x:Name="ContestantsListBox" Classes="contestants" VirtualizationMode="None">
@@ -45,6 +47,7 @@
                 <DataTemplate DataType="viewModels:ContestantReadViewModel">
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="RatingPosition" />
                             <ColumnDefinition SharedSizeGroup="Rank" Width="Auto" />
                             <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
                             <ColumnDefinition SharedSizeGroup="Rating" Width="Auto" />
@@ -53,24 +56,26 @@
                             <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
                             <ColumnDefinition SharedSizeGroup="WTRatio" Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Contestant.Rank}"
+                        <TextBlock Text="{Binding ScorePosition}" />
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding Contestant.Rank}"
                                    Margin="0,0,5,0" />
-                        <TextBlock Grid.Column="1" Text="{Binding Contestant.Name}" />
+                        <TextBlock Grid.Column="2" Text="{Binding Contestant.Name}" />
                         <TextBlock
-                            Grid.Column="2"
+                            Grid.Column="3"
                             Text="{Binding MonthlyScore}"
                             Margin="5,0,0,0" />
                         <TextBlock
-                            Grid.Column="3"
+                            Grid.Column="4"
                             Text="{Binding Statistics.GamesTotal}" />
                         <TextBlock
-                            Grid.Column="4"
+                            Grid.Column="5"
                             Text="{Binding Statistics.Wins}" />
                         <TextBlock
-                            Grid.Column="5"
+                            Grid.Column="6"
                             Text="{Binding Statistics.Losses}" />
                         <TextBlock
-                            Grid.Column="6"
+                            Grid.Column="7"
                             Text="{Binding Statistics.WinTotalRatioPercentage, StringFormat=\{0:F1\}%}" />
                     </Grid>
                 </DataTemplate>

@@ -32,7 +32,7 @@ namespace TableTennis.ViewModels
             this.WhenActivated(cleanUp =>
             {
                 gamesDb.Select(db => db.ContestantsConnect()
-                        .Transform(contestant => new ContestantReadViewModel(db, db.GetMonthlyScoresDb(), contestant)))
+                        .Transform(contestant => new ContestantReadViewModel(db, contestant)))
                     .Switch()
                     .Sort(this.WhenAnyValue(x => x.SelectedSortViewModel)
                         .StartWith(SelectedSortViewModel)
