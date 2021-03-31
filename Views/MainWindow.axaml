@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:system="clr-namespace:System;assembly=System.Runtime"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="TableTennis.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Background="{DynamicResource ThemeBackgroundBrush}"
@@ -47,7 +47,16 @@
             <Setter Property="Padding" Value="10" />
             <Setter Property="Background" Value="#24292e" />
         </Style>
-        <Style Selector="Border.title > TextBlock">
+        <Style Selector="Border.title TextBlock">
+            <Setter Property="FontSize" Value="40" />
+            <Setter Property="Foreground" Value="#ffffff" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="Padding" Value="10" />
+            <!-- <Setter Property="FontFamily" Value="/Assets/Fonts#Rubik Mono One" /> -->
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#24292e" />
+        </Style>
+        <Style Selector="TextBlock.clock">
             <Setter Property="FontSize" Value="40" />
             <Setter Property="Foreground" Value="#ffffff" />
             <Setter Property="TextAlignment" Value="Center" />
@@ -160,7 +169,11 @@
 
     <DockPanel>
         <Border Classes="title" DockPanel.Dock="Top">
-            <TextBlock Text="Рейтинг по настольному теннису" />
+            <Grid>
+                <TextBlock Classes="title" Text="Рейтинг по настольному теннису" />
+                <TextBlock x:Name="ClockTextBlock" HorizontalAlignment="Right" />
+                <TextBlock x:Name="DateTextBlock" HorizontalAlignment="Left" />
+            </Grid>
         </Border>
         <ListBox Classes="menu" x:Name="MenuListBox" DockPanel.Dock="Top">
             <ListBox.ItemTemplate>

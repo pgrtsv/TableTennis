@@ -29,7 +29,18 @@ namespace TableTennis.Views
                     x => x.SelectedViewModel,
                     x => x.ViewModelViewHost.ViewModel
                 ).DisposeWith(cleanUp);
-
+                this.OneWayBind(
+                        ViewModel,
+                        x => x.DateTime,
+                        x => x.ClockTextBlock.Text,
+                        time => time.ToString("HH:mm"))
+                    .DisposeWith(cleanUp);
+                this.OneWayBind(
+                        ViewModel,
+                        x => x.DateTime,
+                        x => x.DateTextBlock.Text,
+                        time => time.ToString("dd.MM.yyyy"))
+                    .DisposeWith(cleanUp);
             });
         }
 
@@ -41,5 +52,7 @@ namespace TableTennis.Views
         public ListBox MenuListBox => this.FindControl<ListBox>(nameof(MenuListBox));
 
         public ViewModelViewHost ViewModelViewHost => this.FindControl<ViewModelViewHost>(nameof(ViewModelViewHost));
+        public TextBlock ClockTextBlock => this.FindControl<TextBlock>(nameof(ClockTextBlock));
+        public TextBlock DateTextBlock => this.FindControl<TextBlock>(nameof(DateTextBlock));
     }
 }

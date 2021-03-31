@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Text;
+using System.Reactive.Linq;
 using ReactiveUI;
 using TableTennis.Models;
 
@@ -27,6 +27,9 @@ namespace TableTennis.ViewModels
             set => this.RaiseAndSetIfChanged(ref _selectedViewModel, value);
         }
 
+        private readonly ObservableAsPropertyHelper<DateTime> _dateTime;
+        public DateTime DateTime => _dateTime.Value;
+
 
         public MainWindowViewModel()
         {
@@ -50,6 +53,10 @@ namespace TableTennis.ViewModels
                 gamesViewModel
             };
             _selectedViewModel = contestantViewModel;
+            _dateTime = Observable.Interval(TimeSpan.FromSeconds(1))
+                .Select(_ => DateTime.Now)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this, nameof(DateTime));
             this.WhenActivated(cleanUp =>
             {
                 GamesDbProvider.EnableAutoSaving(TimeSpan.FromSeconds(1))
