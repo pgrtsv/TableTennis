@@ -6,6 +6,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using TableTennis.Models;
 
 namespace TableTennis.ViewModels
@@ -29,20 +30,26 @@ namespace TableTennis.ViewModels
                 new SortViewModel<ContestantReadViewModel>("рейтингу", x => x.MonthlyScore)
             };
             SelectedSortViewModel = SortViewModels.Last();
+            SelectedSortViewModel.IsDescending = true;
+            gamesDb.Select(db => db.ContestantsConnect()
+                    .Transform(contestant => new ContestantReadViewModel(db, contestant))
+                    .AutoRefresh()
+                    .DisposeMany())
+                .Switch()
+                .Filter(x => x.Statistics?.GamesTotal > 0)
+                .Sort(this.WhenAnyValue(x => x.SelectedSortViewModel)
+                    .StartWith(SelectedSortViewModel)
+                    .Select(sortViewModel => sortViewModel.GetObservable())
+                    .Switch())
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out var contestants)
+                .Subscribe();
+            Contestants = contestants;
+
             this.WhenActivated(cleanUp =>
             {
-                gamesDb.Select(db => db.ContestantsConnect()
-                        .Transform(contestant => new ContestantReadViewModel(db, contestant)))
-                    .Switch()
-                    .Sort(this.WhenAnyValue(x => x.SelectedSortViewModel)
-                        .StartWith(SelectedSortViewModel)
-                        .Select(sortViewModel => sortViewModel.GetObservable())
-                        .Switch())
-                    .Bind(out var contestants)
-                    .Subscribe()
-                    .DisposeWith(cleanUp);
-                Contestants = contestants;
                 AddContestantViewModel.Add
+                    .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(_ => IsAddingContestant = false)
                     .DisposeWith(cleanUp);
 
@@ -57,19 +64,11 @@ namespace TableTennis.ViewModels
             });
         }
 
-        public ReadOnlyObservableCollection<ContestantReadViewModel> Contestants { get; private set; }
-
+        public ReadOnlyObservableCollection<ContestantReadViewModel> Contestants { get; }
         public AddContestantViewModel AddContestantViewModel { get; }
-
         public IEnumerable<SortViewModel<ContestantReadViewModel>> SortViewModels { get; }
-
         IEnumerable<ISortViewModel> IHasSorting.SortViewModels => SortViewModels;
-
-        public SortViewModel<ContestantReadViewModel> SelectedSortViewModel
-        {
-            get => _selectedSortViewModel;
-            set => this.RaiseAndSetIfChanged(ref _selectedSortViewModel, value);
-        }
+        [Reactive] public SortViewModel<ContestantReadViewModel> SelectedSortViewModel { get; set; }
 
         ISortViewModel IHasSorting.SelectedSortViewModel
         {
@@ -77,21 +76,8 @@ namespace TableTennis.ViewModels
             set => SelectedSortViewModel = (SortViewModel<ContestantReadViewModel>) value;
         }
 
-        private bool _isAddingContestant;
-        private SortViewModel<ContestantReadViewModel> _selectedSortViewModel;
-        private bool _isShowingSortPanel;
-
-        public bool IsAddingContestant
-        {
-            get => _isAddingContestant;
-            set => this.RaiseAndSetIfChanged(ref _isAddingContestant, value);
-        }
-
-        public bool IsShowingSortPanel
-        {
-            get => _isShowingSortPanel;
-            set => this.RaiseAndSetIfChanged(ref _isShowingSortPanel, value);
-        }
+        [Reactive] public bool IsAddingContestant { get; set; }
+        [Reactive] public bool IsShowingSortPanel { get; set; }
 
 
         public override string Name { get; } = "Спортсмены";

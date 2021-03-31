@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using DynamicData.Binding;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace TableTennis.ViewModels
 {
@@ -15,15 +16,7 @@ namespace TableTennis.ViewModels
         }
 
         public string Name { get; }
-
-        private bool _isDescending;
-
-        public bool IsDescending
-        {
-            get => _isDescending;
-            set => this.RaiseAndSetIfChanged(ref _isDescending, value);
-        }
-
+        [Reactive] public bool IsDescending { get; set; }
         public Func<T, IComparable> Comparer { get; }
 
         public override string ToString() => Name;

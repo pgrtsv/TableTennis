@@ -1,7 +1,6 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
@@ -56,7 +55,7 @@ namespace TableTennis.Views
                     {
                         if (!(args.Source is Control control))
                             throw new Exception();
-                        var contestant = (ContestantReadViewModel) control.DataContext;
+                        var contestant = (ContestantReadViewModel) control.DataContext!;
                         return contestant.Contestant.Guid;
                     })
                     .InvokeCommand(ViewModel.AppCommands.ShowContestantGamesResults)

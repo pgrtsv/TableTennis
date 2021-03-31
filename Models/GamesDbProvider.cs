@@ -72,9 +72,9 @@ namespace TableTennis.Models
             );
             watcher.EnableRaisingEvents = true;
             return new CompositeDisposable(dbFileCreated.Merge(dbFileChanged)
-                    .ObserveOn(new NewThreadScheduler())
                     .Where(_ => File.GetLastWriteTime(FilePath) != _lastSavedDateTime)
                     .Throttle(throttle)
+                    .ObserveOn(SynchronizationContext.Current!)
                     .Subscribe(_ => Load()),
                 watcher);
         }

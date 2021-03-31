@@ -41,6 +41,11 @@ namespace TableTennis.Views
                         x => x.DateTextBlock.Text,
                         time => time.ToString("dd.MM.yyyy"))
                     .DisposeWith(cleanUp);
+                this.OneWayBind(
+                        ViewModel,
+                        x => x.EatingTimeInfo,
+                        x => x.EatingTimeTextBlock.Text)
+                    .DisposeWith(cleanUp);
             });
         }
 
@@ -54,5 +59,6 @@ namespace TableTennis.Views
         public ViewModelViewHost ViewModelViewHost => this.FindControl<ViewModelViewHost>(nameof(ViewModelViewHost));
         public TextBlock ClockTextBlock => this.FindControl<TextBlock>(nameof(ClockTextBlock));
         public TextBlock DateTextBlock => this.FindControl<TextBlock>(nameof(DateTextBlock));
+        public TextBlock EatingTimeTextBlock => this.FindControl<TextBlock>(nameof(EatingTimeTextBlock));
     }
 }

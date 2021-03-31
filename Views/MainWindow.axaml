@@ -51,7 +51,7 @@
             <Setter Property="FontSize" Value="40" />
             <Setter Property="Foreground" Value="#ffffff" />
             <Setter Property="TextAlignment" Value="Center" />
-            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="10" />
             <!-- <Setter Property="FontFamily" Value="/Assets/Fonts#Rubik Mono One" /> -->
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Background" Value="#24292e" />
@@ -67,7 +67,12 @@
         <Style Selector="ListBox">
             <Setter Property="Background" Value="#ffffff"></Setter>
         </Style>
-        <Style Selector="ListBox.menu">
+        <Style Selector="Border.nav_menu">
+            <Setter Property="Background" Value="#ff6f00" />
+            <Setter Property="TextBlock.Foreground" Value="#ffffff" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="Border.nav_menu ListBox">
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
@@ -79,19 +84,22 @@
             <Setter Property="Foreground" Value="#ffffff" />
         </Style>
         <!--  Selected State  -->
-        <Style Selector="ListBox.menu > ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Style Selector="Border.nav_menu TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Border.nav_menu ListBox > ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#24292e" />
             <Setter Property="TextBlock.Foreground" Value="#ffffff"></Setter>
         </Style>
-        <Style Selector="ListBox.menu TextBlock">
+        <Style Selector="Border.nav_menu TextBlock">
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="TextDecorations" Value="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
         </Style>
-        <Style Selector="ListBox.menu > ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Style Selector="Border.nav_menu ListBox > ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="TextBlock.Foreground" Value="#babcbd" />
             <Setter Property="Background" Value="Transparent" />
         </Style>
-        <Style Selector="ListBox.menu > ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Style Selector="Border.nav_menu ListBox > ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#24292e" />
         </Style>
         <Style Selector="Border.menu">
@@ -175,13 +183,21 @@
                 <TextBlock x:Name="DateTextBlock" HorizontalAlignment="Left" />
             </Grid>
         </Border>
-        <ListBox Classes="menu" x:Name="MenuListBox" DockPanel.Dock="Top">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name, Mode=OneTime}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Border Classes="nav_menu" DockPanel.Dock="Top">
+            <Grid ColumnDefinitions="*,Auto">
+                <ListBox x:Name="MenuListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name, Mode=OneTime}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Column="1" x:Name="EatingTimeTextBlock"
+                           FontSize="25"
+                           Margin="0,0,20,0"
+                           FontWeight="Regular" />
+            </Grid>
+        </Border>
         <rxui:ViewModelViewHost x:Name="ViewModelViewHost" />
     </DockPanel>
 </Window>

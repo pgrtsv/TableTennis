@@ -6,21 +6,17 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using TableTennis.Models;
 
 namespace TableTennis.ViewModels
 {
     public sealed class GamesViewModel : ChildViewModelBase, IHasSorting
     {
-        private bool _isAddingGameResult;
-        private bool _isSorting;
-        private SortViewModel<GameResultReadViewModel> _selectedSortViewModel;
-        private bool _isFiltering;
-
         public GamesViewModel(IObservable<GamesDb> gamesDb)
         {
-            _selectedSortViewModel = SortViewModels.First();
-            _selectedSortViewModel.IsDescending = true;
+            SelectedSortViewModel = SortViewModels.First();
+            SelectedSortViewModel.IsDescending = true;
             FilterViewModel = new FilterGameResultsViewModel(gamesDb);
             gamesDb.Select(db => db.GamesResultsConnect()
                     .Transform(result =>
@@ -83,23 +79,11 @@ namespace TableTennis.ViewModels
 
         public FilterGameResultsViewModel FilterViewModel { get; }
 
-        public bool IsAddingGameResult
-        {
-            get => _isAddingGameResult;
-            set => this.RaiseAndSetIfChanged(ref _isAddingGameResult, value);
-        }
+        [Reactive] public bool IsAddingGameResult { get; set; }
 
-        public bool IsSorting
-        {
-            get => _isSorting;
-            set => this.RaiseAndSetIfChanged(ref _isSorting, value);
-        }
+        [Reactive] public bool IsSorting { get; set; }
 
-        public bool IsFiltering
-        {
-            get => _isFiltering;
-            set => this.RaiseAndSetIfChanged(ref _isFiltering, value);
-        }
+        [Reactive] public bool IsFiltering { get; set; }
 
         public override string Name { get; } = "Матчи";
 
@@ -112,11 +96,7 @@ namespace TableTennis.ViewModels
 
         IEnumerable<ISortViewModel> IHasSorting.SortViewModels => SortViewModels;
 
-        public SortViewModel<GameResultReadViewModel> SelectedSortViewModel
-        {
-            get => _selectedSortViewModel;
-            set => this.RaiseAndSetIfChanged(ref _selectedSortViewModel, value);
-        }
+        [Reactive] public SortViewModel<GameResultReadViewModel> SelectedSortViewModel { get; set; }
 
         ISortViewModel IHasSorting.SelectedSortViewModel
         {

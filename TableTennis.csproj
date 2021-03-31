@@ -15,5 +15,6 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
     <PackageReference Include="Avalonia.ReactiveUI.Events" Version="0.10.0" />
     <PackageReference Include="DynamicData" Version="7.1.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="13.2.2" />
   </ItemGroup>
 </Project>
