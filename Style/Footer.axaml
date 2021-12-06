@@ -1,0 +1,37 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+    <Design.PreviewWith>
+        <Border Classes="footer" Width="1200" Height="20">
+            <StackPanel Orientation="Horizontal">
+                <avalonia:MaterialIcon Kind="ContentSaveCog" />
+                <TextBlock Text="Сохраняю..." />
+                <avalonia:MaterialIcon Kind="Upload" />
+                <TextBlock Text="Загружаю..." />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Style/Colors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <Style Selector="Border.footer">
+        <Setter Property="Background" Value="{StaticResource Dark1}" />
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource Light}" />
+        <Setter Property="Padding" Value="5, 1" />
+    </Style>
+    <Style Selector="Border.footer TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Light" />
+    </Style>
+    <Style Selector="Border.footer avalonia|MaterialIcon">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="1" />
+    </Style>
+</Styles>

@@ -1,0 +1,152 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Grid 
+            Width="1000"
+            Height="500"
+            ColumnDefinitions="*,*,*,*,*,*,*" 
+            RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
+            <Border 
+                Classes="first_wave"
+                Grid.Column="0" 
+                Grid.Row="0"
+                Grid.RowSpan="15" />
+            <TextBox Grid.Row="0" Grid.Column="0" Text="Спортсмен 1" />
+            <TextBox Grid.Row="2" Grid.Column="0" Text="Спортсмен 2" />
+            <TextBox Grid.Row="4" Grid.Column="0" Text="Спортсмен 3" />
+            <TextBox Grid.Row="6" Grid.Column="0" Text="Спортсмен 4" />
+            <TextBox Grid.Row="8" Grid.Column="0" Text="Спортсмен 5" />
+            <TextBox Grid.Row="10" Grid.Column="0" Text="Спортсмен 6" />
+            <TextBox Grid.Row="12" Grid.Column="0" Text="Спортсмен 7" />
+            <TextBox Grid.Row="14" Grid.Column="0" Text="Спортсмен 8" />
+            <Border 
+                Classes="first_wave"
+                Grid.Column="6"
+                Grid.Row="0"
+                Grid.RowSpan="15" />
+            <TextBox Grid.Row="0" Grid.Column="6" Text="Спортсмен 9" />
+            <TextBox Grid.Row="2" Grid.Column="6" Text="Спортсмен 10" />
+            <TextBox Grid.Row="4" Grid.Column="6" Text="Спортсмен 11" />
+            <TextBox Grid.Row="6" Grid.Column="6" Text="Спортсмен 12" />
+            <TextBox Grid.Row="8" Grid.Column="6" Text="Спортсмен 13" />
+            <TextBox Grid.Row="10" Grid.Column="6" Text="Спортсмен 14" />
+            <TextBox Grid.Row="12" Grid.Column="6" Text="Спортсмен 15" />
+            <TextBox Grid.Row="14" Grid.Column="6" Text="Спортсмен 16" />
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" 
+                       Classes="score"
+                       Text="Счёт" />
+            <TextBlock Grid.Row="5" Grid.Column="0" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="9" Grid.Column="0" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="13" Grid.Column="0" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="1" Grid.Column="6" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="5" Grid.Column="6" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="9" Grid.Column="6" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="13" Grid.Column="6" Classes="score" Text="Счёт" />
+
+            <Border 
+                Classes="second_wave"
+                Grid.Column="1"
+                Grid.Row="0"
+                Grid.RowSpan="15" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="Победитель 1" />
+            <TextBlock Grid.Row="5" Grid.Column="1" Text="Победитель 2" />
+            <TextBlock Grid.Row="9" Grid.Column="1" Text="Победитель 3" />
+            <TextBlock Grid.Row="13" Grid.Column="1" Text="Победитель 4" />
+            <Border 
+                Classes="second_wave"
+                Grid.Column="5"
+                Grid.Row="0"
+                Grid.RowSpan="15" />
+            <TextBlock Grid.Row="1" Grid.Column="5" Text="Победитель 5" />
+            <TextBlock Grid.Row="5" Grid.Column="5" Text="Победитель 6" />
+            <TextBlock Grid.Row="9" Grid.Column="5" Text="Победитель 7" />
+            <TextBlock Grid.Row="13" Grid.Column="5" Text="Победитель 8" />
+            
+            <TextBlock Grid.Row="3" Grid.Column="1" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="11" Grid.Column="1" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="3" Grid.Column="5" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="11" Grid.Column="5" Classes="score" Text="Счёт" />
+            
+            
+            <Border 
+                Classes="semifinal"
+                Grid.Column="2"
+                Grid.Row="0"
+                Grid.RowSpan="15" />
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="Победитель 1" />
+            <TextBlock Grid.Row="11" Grid.Column="2" Text="Победитель 2" />
+            <Border 
+                Classes="semifinal"
+                Grid.Column="4"
+                Grid.Row="0"
+                Grid.RowSpan="15" />
+            <TextBlock Grid.Row="3" Grid.Column="4" Text="Победитель 3" />
+            <TextBlock Grid.Row="11" Grid.Column="4" Text="Победитель 4" />
+
+            <TextBlock Grid.Row="7" Grid.Column="2" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="7" Grid.Column="4" Classes="score" Text="Счёт" />
+            
+            <Border 
+                Classes="final"
+                Grid.Column="3"
+                Grid.Row="0"
+                Grid.RowSpan="15" />
+            <TextBlock Grid.Row="4" Grid.Column="3" Text="Финал 1" />
+            <TextBlock Grid.Row="6" Grid.Column="3" Text="Финал 2" />
+            <TextBlock Grid.Row="8" Grid.Column="3" Text="Финал 3" />
+            <TextBlock Grid.Row="10" Grid.Column="3" Text="Финал 4" />
+            
+            <TextBlock Grid.Row="5" Grid.Column="3" Classes="score" Text="Счёт" />
+            <TextBlock Grid.Row="9" Grid.Column="3" Classes="score" Text="Счёт" />
+        </Grid>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Style/Colors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="PrimaryAccent1" 
+                             Color="{StaticResource DarkColor1}" 
+                             Opacity="0.1" />
+            <SolidColorBrush x:Key="PrimaryAccent2" 
+                             Color="{StaticResource DarkColor1}" 
+                             Opacity="0.2" />
+            <SolidColorBrush x:Key="PrimaryAccent3" 
+                             Color="{StaticResource DarkColor1}" 
+                             Opacity="0.3" />
+        </ResourceDictionary>
+    </Styles.Resources>
+    
+    <StyleInclude Source="/Style/Styles.axaml" />
+    
+    <Style Selector="TextBox">
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    
+    <Style Selector="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    
+    <Style Selector="Border.first_wave">
+        <Setter Property="Background" Value="{StaticResource Light}" />
+    </Style>
+    
+    <Style Selector="Border.second_wave">
+        <Setter Property="Background" Value="{StaticResource PrimaryAccent1}" />
+    </Style>
+    <Style Selector="Border.semifinal">
+        <Setter Property="Background" Value="{StaticResource PrimaryAccent2}" />
+    </Style>
+    <Style Selector="Border.final">
+        <Setter Property="Background" Value="{StaticResource PrimaryAccent3}" />
+    </Style>
+    <Style Selector="TextBlock">
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="TextBlock.score">
+        <Setter Property="FontWeight" Value="Regular" />
+    </Style>
+</Styles>

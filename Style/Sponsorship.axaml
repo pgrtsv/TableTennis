@@ -1,0 +1,34 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+    
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Style/Colors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <Style Selector="TextBlock.sponsorship">
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Margin" Value="20, 0" />
+        <Setter Property="FontSize" Value="60" />
+        <Setter Property="FontFamily" Value="/Assets/Fonts#Waree" />
+        <Style.Animations>
+            <Animation Duration="0:0:3" IterationCount="INFINITE">
+                <KeyFrame Cue="50%">
+                    <Setter Property="SkewTransform.AngleX" Value="-40.0" />
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="SkewTransform.AngleX" Value="0.0" />
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+</Styles>

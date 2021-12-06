@@ -9,41 +9,57 @@ namespace TableTennis.ViewModels
 {
     public sealed class ContestantReadViewModel : ReactiveObject, IDisposable
     {
-        public ContestantReadViewModel(GamesDb gamesDb, Contestant contestant)
+        public ContestantReadViewModel(
+            RatingSystem ratingSystem, 
+            Contestant contestant)
         {
-            if (gamesDb == null) throw new ArgumentNullException(nameof(gamesDb));
+            if (ratingSystem == null) throw new ArgumentNullException(nameof(ratingSystem));
+            var gamesDb = ratingSystem.GamesDb;
+            var contestantsDb = ratingSystem.ContestantsDb;
             Contestant = contestant ?? throw new ArgumentNullException(nameof(contestant));
-            _statistics = gamesDb.StatisticsConnect(contestant.Guid)
+            _statistics = gamesDb.StatisticsConnect(contestant.Guid, contestantsDb)
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .ToProperty(this, nameof(Statistics));
-            _monthlyScore = this.WhenAnyValue(x => x.Statistics,
-                    selector: _ =>
-                        gamesDb.GetMonthlyScoresDb().RatingsForContestants
-                            .First(x => x.ContestantGuid == contestant.Guid).Score)
+                .ToProperty(this, nameof(Statistics), ContestantStatistics.GetDefault(contestant.Guid));
+            _rating = ratingSystem
+                .RatingsForContestantsConnect()
+                .Filter(rating => rating.ContestantGuid == contestant.Guid)
+                .QueryWhenChanged(set => set.Items.First().Score)
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .ToProperty(this, nameof(contestant));
-            _scorePosition = gamesDb.GetMonthlyScoresDb().RatingsForContestantsConnect()
+                .ToProperty(this, nameof(Rating));
+            _winTotalRatioPercentage = this.WhenAnyValue(x => x.Statistics,
+                statistics =>
+                    statistics.IsCalibrated 
+                        ? $"{statistics.WinTotalRatioPercentage:F1}%"
+                        : "-")
+                .ToProperty(this, nameof(WinTotalRatioPercentage));
+            _scorePosition = ratingSystem
+                .RatingsForContestantsConnect()
                 .QueryWhenChanged(ratings => ratings.Items
                     .OrderByDescending(x => x.Score)
-                    .Count(x => x.Score > gamesDb.GetMonthlyScoresDb().RatingsForContestants
+                    .Count(x => x.Score > ratingSystem.RatingsForContestants
                         .First(y => y.ContestantGuid == contestant.Guid).Score) + 1)
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .ToProperty(this, nameof(ScorePosition));
+                .ToProperty(this, nameof(Rating));
         }
 
         public Contestant Contestant { get; }
+
         public ContestantStatistics Statistics => _statistics.Value;
-        public double MonthlyScore => _monthlyScore.Value;
+
+        private readonly ObservableAsPropertyHelper<string> _winTotalRatioPercentage;
+        public string WinTotalRatioPercentage => _winTotalRatioPercentage.Value;
+        
+        private readonly ObservableAsPropertyHelper<int> _rating;
+        public int Rating => _rating.Value;
         public int ScorePosition => _scorePosition.Value;
 
-        private readonly ObservableAsPropertyHelper<int> _monthlyScore;
         private readonly ObservableAsPropertyHelper<ContestantStatistics> _statistics;
         private readonly ObservableAsPropertyHelper<int> _scorePosition;
 
         public void Dispose()
         {
             _statistics.Dispose();
-            _monthlyScore.Dispose();
+            _rating.Dispose();
             _scorePosition.Dispose();
         }
     }

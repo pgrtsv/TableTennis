@@ -17,23 +17,23 @@ namespace TableTennis.Models
         /// <summary>
         /// Счёт первого спортсмена. 
         /// </summary>
-        public ContestantResult FirstContestantResult { get; }
+        public ContestantScore FirstContestantScore { get; }
         
         /// <summary>
         /// Счёт второго спортсмена.
         /// </summary>
-        public ContestantResult SecondContestantResult { get; }
+        public ContestantScore SecondContestantScore { get; }
         
         /// <summary>
         /// Дата и время матча.
         /// </summary>
         public DateTime DateTime { get; }
 
-        public GameResult(ContestantResult first, ContestantResult second)
+        public GameResult(ContestantScore first, ContestantScore second)
         {
             Guid = Guid.NewGuid();
-            FirstContestantResult = first;
-            SecondContestantResult = second;
+            FirstContestantScore = first;
+            SecondContestantScore = second;
             DateTime = DateTime.Now;
         }
         
@@ -42,24 +42,24 @@ namespace TableTennis.Models
         /// </summary>
         [JsonConstructor, UsedImplicitly]
         public GameResult(Guid guid, 
-            ContestantResult firstContestantResult, 
-            ContestantResult secondContestantResult, 
+            ContestantScore firstContestantScore, 
+            ContestantScore secondContestantScore, 
             DateTime dateTime)
         {
             Guid = guid;
-            FirstContestantResult = firstContestantResult;
-            SecondContestantResult = secondContestantResult;
+            FirstContestantScore = firstContestantScore;
+            SecondContestantScore = secondContestantScore;
             DateTime = dateTime;
         }
 
-        public Guid GetWinnerGuid() => FirstContestantResult.Score > SecondContestantResult.Score
-            ? FirstContestantResult.ContestantGuid
-            : SecondContestantResult.ContestantGuid;
+        public Guid GetWinnerGuid() => FirstContestantScore.Score > SecondContestantScore.Score
+            ? FirstContestantScore.ContestantGuid
+            : SecondContestantScore.ContestantGuid;
 
-        public bool IsFirstContestantWinner() => FirstContestantResult.Score == 11;
+        public bool IsFirstContestantWinner() => FirstContestantScore.Score == 11;
             
         public bool DidContestantTakePart(Guid contestantGuid) =>
-            FirstContestantResult.ContestantGuid == contestantGuid ||
-            SecondContestantResult.ContestantGuid == contestantGuid;
+            FirstContestantScore.ContestantGuid == contestantGuid ||
+            SecondContestantScore.ContestantGuid == contestantGuid;
     }
 }

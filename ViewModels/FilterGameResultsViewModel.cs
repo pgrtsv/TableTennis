@@ -11,9 +11,9 @@ namespace TableTennis.ViewModels
 {
     public sealed class FilterGameResultsViewModel : ReactiveObject
     {
-        public FilterGameResultsViewModel(IObservable<GamesDb> gamesDb)
+        public FilterGameResultsViewModel(IObservable<ContestantsDb> contestantsDb)
         {
-            gamesDb.Select(x => x.ContestantsConnect())
+            contestantsDb.Select(x => x.ContestantsConnect())
                 .Switch()
                 .Bind(out var contestants)
                 .Subscribe();

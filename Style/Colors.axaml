@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="PrimaryAccentColor">#ff6f00</Color>
+    <Color x:Key="PrimaryAccentColor1">#ffae4b</Color>
+    <Color x:Key="LightColor">#ffffff</Color>
+    <Color x:Key="LightColor1">#eaecef</Color>
+    <Color x:Key="LightColor2">#babcbd</Color>
+    <Color x:Key="DarkColor">#000000</Color>
+    <Color x:Key="DarkColor1">#24292e</Color>
+    <Color x:Key="WinColor">#49CA37</Color>
+    <Color x:Key="LoseColor">#D31E29</Color>
+    <Color x:Key="FirstPlaceColor">#FFCA28</Color>
+    <Color x:Key="SecondPlaceColor">#C0C0C0</Color>
+    <Color x:Key="ThirdPlaceColor">#CD7F32</Color>
+    
+    <SolidColorBrush x:Key="PrimaryAccent" Color="{StaticResource PrimaryAccentColor}" />
+    <SolidColorBrush x:Key="PrimaryAccent1" Color="{StaticResource PrimaryAccentColor1}" />
+    <SolidColorBrush x:Key="Light" Color="{StaticResource LightColor}" />
+    <SolidColorBrush x:Key="Light1" Color="{StaticResource LightColor1}" />
+    <SolidColorBrush x:Key="Light2" Color="{StaticResource LightColor2}" />
+    <SolidColorBrush x:Key="Dark" Color="{StaticResource DarkColor}" />
+    <SolidColorBrush x:Key="Dark1" Color="{StaticResource DarkColor1}" />
+    <SolidColorBrush x:Key="Win" Color="{StaticResource WinColor}" />
+    <SolidColorBrush x:Key="Lose" Color="{StaticResource LoseColor}" />
+    <SolidColorBrush x:Key="FirstPlace" Color="{StaticResource FirstPlaceColor}" />
+    <SolidColorBrush x:Key="SecondPlace" Color="{StaticResource SecondPlaceColor}" />
+    <SolidColorBrush x:Key="ThirdPlace" Color="{StaticResource ThirdPlaceColor}" />
+</ResourceDictionary>

@@ -3,10 +3,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <Title>TableTennis</Title>
+    <Authors>Kirill Pogartsev</Authors>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Style\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.0" />
@@ -15,6 +18,10 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
     <PackageReference Include="Avalonia.ReactiveUI.Events" Version="0.10.0" />
     <PackageReference Include="DynamicData" Version="7.1.1" />
+    <PackageReference Include="FluentValidation" Version="10.0.4" />
+    <PackageReference Include="Material.Icons.Avalonia" Version="1.0.2" />
+    <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-20201211.2" />
     <PackageReference Include="ReactiveUI.Fody" Version="13.2.2" />
+    <PackageReference Include="stateless" Version="5.11.0" />
   </ItemGroup>
 </Project>

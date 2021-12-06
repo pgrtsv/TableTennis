@@ -15,8 +15,8 @@ namespace TableTennis.ViewModels
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class AddContestantViewModel : ReactiveObject
     {
-        private readonly ObservableAsPropertyHelper<GamesDb> _gamesDb;
-        public GamesDb GamesDb => _gamesDb.Value;
+        private readonly ObservableAsPropertyHelper<ContestantsDb> _contestantsDb;
+        public ContestantsDb ContestantsDb => _contestantsDb.Value;
 
         [Reactive] public string Name { get; set; }
 
@@ -26,20 +26,20 @@ namespace TableTennis.ViewModels
 
         public ReactiveCommand<Unit, Unit> Add { get; }
 
-        public AddContestantViewModel(IObservable<GamesDb> gamesDb)
+        public AddContestantViewModel(IObservable<ContestantsDb> contestantsDb, IObservable<GamesDb> gamesDb)
         {
             Name = string.Empty;
             Rank = MilitaryRank.None;
-            _gamesDb = gamesDb
+            _contestantsDb = contestantsDb
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .ToProperty(this, nameof(GamesDb));
-            Add = ReactiveCommand.Create(() => GamesDb.AddContestant(new Contestant(Rank, FullName.Parse(Name))),
+                .ToProperty(this, nameof(ContestantsDb));
+            Add = ReactiveCommand.Create(() => ContestantsDb.AddContestant(new Contestant(Rank, FullName.Parse(Name))),
                 Observable.CombineLatest(
                     this.WhenAnyValue(x => x.Name),
-                    gamesDb.Select(x => x.ContestantsConnect().QueryWhenChanged()).Switch(),
+                    contestantsDb.Select(x => x.ContestantsConnect().QueryWhenChanged(query => query.Items).StartWith(x.Contestants)).Switch(),
                     (name, contestants) =>
                         FullName.TryParse(out var fullName, name) &&
-                        contestants.Items.All(x => !x.Name.Equals(fullName))));
+                        contestants.All(x => !x.Name.Equals(fullName))));
         }
     }
 }

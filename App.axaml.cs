@@ -7,6 +7,7 @@ using TableTennis.ViewModels;
 using TableTennis.Views;
 using Splat;
 using ReactiveUI;
+using TableTennis.Views.Tournaments;
 
 namespace TableTennis
 {
@@ -16,6 +17,9 @@ namespace TableTennis
         {
             Locator.CurrentMutable.Register(() => new Contestants(), typeof(IViewFor<ContestantsViewModel>));
             Locator.CurrentMutable.Register(() => new Games(), typeof(IViewFor<GamesViewModel>));
+            Locator.CurrentMutable.Register(() => new Settings(), typeof(IViewFor<SettingsViewModel>));
+            Locator.CurrentMutable.Register(() => new Tournament(), typeof(IViewFor<TournamentViewModel>));
+            Locator.CurrentMutable.Register(() => new Statistics(), typeof(IViewFor<StatisticsViewModel>));
             AvaloniaXamlLoader.Load(this);
         }
 
@@ -25,7 +29,7 @@ namespace TableTennis
             {
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    ViewModel = new MainWindowViewModel(),
                 };
             }
 

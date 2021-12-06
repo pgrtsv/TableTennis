@@ -1,3 +1,4 @@
+using System;
 using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Controls;
@@ -17,17 +18,11 @@ namespace TableTennis.Views
             this.WhenActivated(cleanUp =>
             {
                 GamesListBox.Items = ViewModel.GameResults;
-                SortingPanel.ViewModel = ViewModel;
                 FilterGameResults.ViewModel = ViewModel.FilterViewModel;
                 this.OneWayBind(
                         ViewModel,
                         x => x.AddGameResultViewModel,
                         x => x.AddGameResult.ViewModel)
-                    .DisposeWith(cleanUp);
-                this.Bind(
-                        ViewModel,
-                        x => x.IsSorting,
-                        x => x.SortToggleButton.IsChecked)
                     .DisposeWith(cleanUp);
                 this.Bind(
                         ViewModel,
@@ -46,11 +41,6 @@ namespace TableTennis.Views
                     .DisposeWith(cleanUp);
                 this.OneWayBind(
                         ViewModel,
-                        x => x.IsSorting,
-                        x => x.SortingPanel.IsVisible)
-                    .DisposeWith(cleanUp);
-                this.OneWayBind(
-                        ViewModel,
                         x => x.IsAddingGameResult,
                         x => x.AddGameResult.IsVisible)
                     .DisposeWith(cleanUp);
@@ -58,6 +48,37 @@ namespace TableTennis.Views
                         ViewModel,
                         x => x.IsAddingGameResult,
                         x => x.AddGameResult.AddButton.IsDefault)
+                    .DisposeWith(cleanUp);
+                this.BindCommand(
+                        ViewModel,
+                        x => x.NextPage,
+                        x => x.NextPageButton)
+                    .DisposeWith(cleanUp);
+                this.BindCommand(
+                        ViewModel,
+                        x => x.PreviousPage,
+                        x => x.PreviousPageButton)
+                    .DisposeWith(cleanUp);
+                this.WhenAnyValue(
+                        x => x.ViewModel.CurrentPage,
+                        x => x.ViewModel.PagesCount,
+                        (page, count) => $"{page}/{count}")
+                    .Subscribe(text => PageTextBlock.Text = text)
+                    .DisposeWith(cleanUp);
+                this.BindSorting(
+                        ViewModel,
+                        x => x.DateTimeToggleButton,
+                        x => x.SortViewModels.DateTime)
+                    .DisposeWith(cleanUp);
+                this.BindSorting(
+                        ViewModel,
+                        x => x.FirstContestantToggleButton,
+                        x => x.SortViewModels.FirstContestant)
+                    .DisposeWith(cleanUp);
+                this.BindSorting(
+                        ViewModel,
+                        x => x.SecondContestantToggleButton,
+                        x => x.SortViewModels.SecondContestant)
                     .DisposeWith(cleanUp);
             });
         }
@@ -69,15 +90,24 @@ namespace TableTennis.Views
 
         public ListBox GamesListBox => this.FindControl<ListBox>(nameof(GamesListBox));
         public AddGameResult AddGameResult => this.FindControl<AddGameResult>(nameof(AddGameResult));
-        public SortingPanel SortingPanel => this.FindControl<SortingPanel>(nameof(SortingPanel));
 
         public ToggleButton AddGameResultToggleButton =>
             this.FindControl<ToggleButton>(nameof(AddGameResultToggleButton));
 
-        public ToggleButton SortToggleButton => this.FindControl<ToggleButton>(nameof(SortToggleButton));
-
         public ToggleButton FilterToggleButton => this.FindControl<ToggleButton>(nameof(FilterToggleButton));
 
         public FilterGameResults FilterGameResults => this.FindControl<FilterGameResults>(nameof(FilterGameResults));
+
+        public RepeatButton PreviousPageButton => this.FindControl<RepeatButton>(nameof(PreviousPageButton));
+        public RepeatButton NextPageButton => this.FindControl<RepeatButton>(nameof(NextPageButton));
+        public TextBlock PageTextBlock => this.FindControl<TextBlock>(nameof(PageTextBlock));
+
+        public ToggleButton DateTimeToggleButton => this.FindControl<ToggleButton>(nameof(DateTimeToggleButton));
+
+        public ToggleButton FirstContestantToggleButton =>
+            this.FindControl<ToggleButton>(nameof(FirstContestantToggleButton));
+
+        public ToggleButton SecondContestantToggleButton =>
+            this.FindControl<ToggleButton>(nameof(SecondContestantToggleButton));
     }
 }

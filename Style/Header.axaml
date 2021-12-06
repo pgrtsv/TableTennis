@@ -1,0 +1,42 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Design.PreviewWith>
+        <Border Classes="title" Width="1200" Height="90">
+            <Panel>
+                <TextBlock Classes="title" Text="Рейтинг по настольному теннису" />
+                <TextBlock HorizontalAlignment="Right" Text="12:00" />
+                <TextBlock HorizontalAlignment="Left" Text="12.04.2021" />
+            </Panel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Style/Colors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+    
+    <Style Selector="Border.title">
+        <Setter Property="Height" Value="80" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Background" Value="{StaticResource Dark1}" />
+    </Style>
+
+    <Style Selector="Border.title TextBlock">
+        <Setter Property="FontSize" Value="40" />
+        <Setter Property="Foreground" Value="{StaticResource Light}" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Background" Value="{StaticResource Dark1}" />
+    </Style>
+
+    <Style Selector="TextBlock.title">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+</Styles>

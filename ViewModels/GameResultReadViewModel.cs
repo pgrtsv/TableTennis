@@ -16,7 +16,9 @@ namespace TableTennis.ViewModels
             int firstContestantDelta, 
             int secondContestantDelta, 
             int firstContestantInitialScore, 
-            int secondContestantInitialScore)
+            int secondContestantInitialScore,
+            int firstContestantWinsBefore,
+            int secondContestantWinsBefore, int firstContestantScoreBefore, int secondContestantScoreBefore)
         {
             Guid = guid;
             DateTime = dateTime;
@@ -28,6 +30,10 @@ namespace TableTennis.ViewModels
             SecondContestantScore = secondContestantScore;
             FirstContestantInitialScore = firstContestantInitialScore;
             SecondContestantInitialScore = secondContestantInitialScore;
+            FirstContestantWinsBefore = firstContestantWinsBefore;
+            SecondContestantWinsBefore = secondContestantWinsBefore;
+            FirstContestantScoreBefore = firstContestantScoreBefore;
+            SecondContestantScoreBefore = secondContestantScoreBefore;
             IsFirstContestantWinner = firstContestantScore > secondContestantScore;
             FirstContestantDelta = firstContestantDelta;
             SecondContestantDelta = secondContestantDelta;
@@ -56,7 +62,12 @@ namespace TableTennis.ViewModels
         public int FirstContestantInitialScore { get; }
         
         public int SecondContestantInitialScore { get; }
+        public int FirstContestantWinsBefore { get; }
+        public int SecondContestantWinsBefore { get; }
         
+        public int FirstContestantScoreBefore { get; }
+        public int SecondContestantScoreBefore { get; }
+
         public int FirstContestantDelta { get; }
         
         public int SecondContestantDelta { get; }

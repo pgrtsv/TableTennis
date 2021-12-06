@@ -2,9 +2,9 @@ using System;
 
 namespace TableTennis.Models
 {
-    public sealed class MonthlyRatingForGameResult
+    public sealed class RatingDeltaForGameResult
     {
-        public MonthlyRatingForGameResult(
+        public RatingDeltaForGameResult(
             Guid gameResultGuid, 
             int firstContestantDelta, 
             int secondContestantDelta, 

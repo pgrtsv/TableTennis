@@ -1,0 +1,53 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Style/Colors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+    <Style Selector="Border.nav_menu">
+        <Setter Property="Background" Value="{StaticResource PrimaryAccent}" />
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource Light}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="Border.nav_menu ListBox">
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="{StaticResource PrimaryAccent}" />
+        <Setter Property="Foreground" Value="{StaticResource Light}" />
+    </Style>
+    <Style Selector="Border.nav_menu TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style
+        Selector="Border.nav_menu ListBox > ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Dark1}" />
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource Light}" />
+    </Style>
+    <Style Selector="Border.nav_menu TextBlock">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="TextDecorations" Value="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+    </Style>
+    <Style
+        Selector="Border.nav_menu ListBox > ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource Light2}" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style
+        Selector="Border.nav_menu ListBox > ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Dark1}" />
+    </Style>
+    <!-- Add Styles Here -->
+</Styles>

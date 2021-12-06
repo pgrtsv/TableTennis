@@ -6,7 +6,8 @@ namespace TableTennis.Models
     /// <summary>
     /// ФИО.
     /// </summary>
-    public sealed class FullName: IComparable
+    public sealed class 
+        FullName: IComparable
     {
         /// <summary>
         /// Инициал имени.
@@ -28,8 +29,8 @@ namespace TableTennis.Models
             if (string.IsNullOrWhiteSpace(lastName))
                 throw new ArgumentNullException(nameof(lastName));
             FirstName = firstName;
-            LastName = lastName ?? string.Empty;
-            ParentName = parentName ?? string.Empty;
+            LastName = lastName;
+            ParentName = parentName;
         }
 
         public static bool TryParse(out FullName? fullName, string text)

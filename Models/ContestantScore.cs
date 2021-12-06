@@ -7,7 +7,7 @@ namespace TableTennis.Models
     /// <summary>
     /// Счёт спортсмена в игре.
     /// </summary>
-    public sealed class ContestantResult
+    public sealed class ContestantScore
     {
         /// <summary>
         /// Guid спортсмена.
@@ -18,8 +18,14 @@ namespace TableTennis.Models
         /// Счёт спортсмена.
         /// </summary>
         public int Score { get; }
-
-        public ContestantResult(Contestant contestant, int score)
+    
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contestant"></param>
+        /// <param name="score"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public ContestantScore(Contestant contestant, int score)
         {
             ContestantGuid = contestant.Guid;
             if (score < 0 || score > 11)
@@ -31,7 +37,7 @@ namespace TableTennis.Models
         /// Только для сериализаторов!
         /// </summary>
         [JsonConstructor, UsedImplicitly]
-        public ContestantResult(Guid contestantGuid, int score)
+        public ContestantScore(Guid contestantGuid, int score)
         {
             ContestantGuid = contestantGuid;
             Score = score;

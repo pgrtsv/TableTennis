@@ -46,6 +46,26 @@ namespace TableTennis.Views
                         x => x.EatingTimeInfo,
                         x => x.EatingTimeTextBlock.Text)
                     .DisposeWith(cleanUp);
+                this.OneWayBind(
+                        ViewModel,
+                        x => x.DembelFact,
+                        x => x.RandomFactTextBlock.Text)
+                    .DisposeWith(cleanUp);
+                this.OneWayBind(
+                    ViewModel,
+                    x => x.IsShowingDembelFact,
+                    x => x.RandomFactBorder.IsVisible)
+                    .DisposeWith(cleanUp);
+                this.BindCommand(
+                    ViewModel,
+                    x => x.CloseDembelFact,
+                    x => x.RandomFactCloseButton)
+                    .DisposeWith(cleanUp);
+                this.OneWayBind(
+                        ViewModel,
+                        x => x.SettingsViewModel.IsRubetsEnabled,
+                        x => x.RubetsTextBlock.IsVisible)
+                    .DisposeWith(cleanUp);
             });
         }
 
@@ -60,5 +80,9 @@ namespace TableTennis.Views
         public TextBlock ClockTextBlock => this.FindControl<TextBlock>(nameof(ClockTextBlock));
         public TextBlock DateTextBlock => this.FindControl<TextBlock>(nameof(DateTextBlock));
         public TextBlock EatingTimeTextBlock => this.FindControl<TextBlock>(nameof(EatingTimeTextBlock));
+        public Border RandomFactBorder => this.FindControl<Border>(nameof(RandomFactBorder));
+        public TextBlock RandomFactTextBlock => this.FindControl<TextBlock>(nameof(RandomFactTextBlock));
+        public Button RandomFactCloseButton => this.FindControl<Button>(nameof(RandomFactCloseButton));
+        public TextBlock RubetsTextBlock => this.FindControl<TextBlock>(nameof(RubetsTextBlock));
     }
 }

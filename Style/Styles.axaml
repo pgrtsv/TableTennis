@@ -1,0 +1,16 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <StyleInclude Source="/Style/Defaults/ListBox.axaml" />
+        <StyleInclude Source="/Style/Defaults/TextBox.axaml" />
+        <StyleInclude Source="/Style/Defaults/ComboBox.axaml" />
+        <StyleInclude Source="/Style/Defaults/DatePicker.axaml" />
+
+        <StyleInclude Source="/Style/Header.axaml" />
+        <StyleInclude Source="/Style/NavMenu.axaml" />
+        <StyleInclude Source="/Style/Menu.axaml" />
+        <StyleInclude Source="/Style/RandomFact.axaml" />
+        <StyleInclude Source="/Style/Sponsorship.axaml" />
+        <StyleInclude Source="/Style/ListBoxGridTable.axaml"/>
+        <StyleInclude Source="/Style/TopPanel.axaml" />
+        <StyleInclude Source="/Style/Footer.axaml" />
+</Styles>

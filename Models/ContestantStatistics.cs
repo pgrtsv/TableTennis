@@ -8,13 +8,22 @@ namespace TableTennis.Models
     /// </summary>
     public sealed class ContestantStatistics
     {
-        private ContestantStatistics(Guid contestantGuid, int gamesTotal, int wins, int losses, double winTotalRatio,
+        private ContestantStatistics(
+            Guid contestantGuid, 
+            int gamesTotal, 
+            int wins, 
+            int losses, 
+            bool isCalibrated,
+            double winTotalRatio,
             double winTotalRatioPercentage)
         {
             ContestantGuid = contestantGuid;
             GamesTotal = gamesTotal;
             Wins = wins;
             Losses = losses;
+            IsCalibrated = isCalibrated;
+            if (!IsCalibrated && winTotalRatio != 0 && winTotalRatioPercentage != 0)
+                throw new Exception();
             WinTotalRatio = winTotalRatio;
             WinTotalRatioPercentage = winTotalRatioPercentage;
         }
@@ -38,17 +47,29 @@ namespace TableTennis.Models
         /// Количество поражений спортсмена.
         /// </summary>
         public int Losses { get; }
-        
+
         /// <summary>
         /// Соотношение побед и всех матчей спортсмена.
+        /// Если <see cref="IsCalibrated"/> == false, <see cref="WinTotalRatio"/> == 0.
         /// </summary>
         public double WinTotalRatio { get; }
-        
+
         /// <summary>
         /// Соотношение побед и всех матчей спортсмена (в процентах).
+        /// Если <see cref="IsCalibrated"/> == false, <see cref="WinTotalRatioPercentage"/> == 0.
         /// </summary>
         public double WinTotalRatioPercentage { get; }
         
+        /// <summary>
+        /// true, если <see cref="GamesTotal"/> >= 10.
+        /// </summary>
+        public bool IsCalibrated { get; }
+        
+        /// <summary>
+        /// Собирает и возвращает статистику для выбранного спортсмена.
+        /// </summary>
+        /// <param name="gamesDb">БД матчей.</param>
+        /// <param name="contestantGuid">Guid спортсмена.</param>
         public static ContestantStatistics GetForContestant(GamesDb gamesDb, Guid contestantGuid)
         {
             var gamesWithContestant = gamesDb.GamesResults.Where(result => result.DidContestantTakePart(contestantGuid))
@@ -56,17 +77,26 @@ namespace TableTennis.Models
             var gamesTotal = gamesWithContestant.Length;
             var wins = gamesWithContestant.Count(result => result.GetWinnerGuid() == contestantGuid);
             var losses = gamesWithContestant.Length - wins;
-            var winTotalRatio = gamesTotal == 0 ? 0 : 1.0 * wins / gamesTotal;
+            var isCalibrated = gamesTotal >= 10;
+            var winTotalRatio = isCalibrated ? 1.0 * wins / gamesTotal : 0;
             var winTotalRatioPercentage = winTotalRatio * 100;
             return new ContestantStatistics(
                 contestantGuid,
                 gamesTotal,
                 wins,
                 losses,
+                isCalibrated,
                 winTotalRatio,
                 winTotalRatioPercentage);
         }
 
-        public override string ToString() => $"Матчей: {GamesTotal}, побед: {Wins}, поражений: {Losses}, W/T: {WinTotalRatio:F}";
+        public static ContestantStatistics GetDefault(Guid contestantGuid) => new(
+            contestantGuid,
+            0,
+            0,
+            0,
+            false,
+            0,
+            0);
     }
 }

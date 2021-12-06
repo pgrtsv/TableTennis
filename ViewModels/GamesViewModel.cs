@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
+using DynamicData.Aggregation;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using TableTennis.Models;
@@ -13,41 +15,100 @@ namespace TableTennis.ViewModels
 {
     public sealed class GamesViewModel : ChildViewModelBase, IHasSorting
     {
-        public GamesViewModel(IObservable<GamesDb> gamesDb)
+        public sealed class SortViewModelsCollection
         {
-            SelectedSortViewModel = SortViewModels.First();
+            public SortViewModel<GameResultReadViewModel> DateTime = new("дате/времени матча", x => x.DateTime);
+
+            public SortViewModel<GameResultReadViewModel> FirstContestant =
+                new("ФИО первого спортсмена", x => x.FirstContestantName);
+
+            public SortViewModel<GameResultReadViewModel> SecondContestant =
+                new("ФИО второго спортсмена", x => x.SecondContestantName);
+
+            public IEnumerable<SortViewModel<GameResultReadViewModel>> SortViewModels => new[]
+            {
+                DateTime,
+                FirstContestant,
+                SecondContestant
+            };
+        }
+
+        public GamesViewModel(IObservable<RatingSystem> ratingSystemObservable)
+        {
+            SelectedSortViewModel = SortViewModels.DateTime;
             SelectedSortViewModel.IsDescending = true;
-            FilterViewModel = new FilterGameResultsViewModel(gamesDb);
-            gamesDb.Select(db => db.GamesResultsConnect()
+            FilterViewModel =
+                new FilterGameResultsViewModel(
+                    ratingSystemObservable.Select(ratingSystem => ratingSystem.ContestantsDb));
+            var gameResultsShared = ratingSystemObservable
+                .Select(ratingSystem => ratingSystem.GamesDb.GamesResultsConnect()
                     .Transform(result =>
                     {
-                        var scoreDeltas = db.GetMonthlyScoresDb().RatingsForGameResults
-                            .First(x => x.GameResultGuid == result.Guid);
+                        var scoreDeltas = ratingSystem.GetRatingDeltaForGameResult(result.Guid);
+                        var gameStatistics = ratingSystem.GetStatisticsForGameResult(result.Guid);
                         return new GameResultReadViewModel(
                             result.Guid,
                             result.DateTime,
-                            result.FirstContestantResult.ContestantGuid,
-                            db.Contestants.First(y => y.Guid == result.FirstContestantResult.ContestantGuid).Name
+                            result.FirstContestantScore.ContestantGuid,
+                            ratingSystem.ContestantsDb.Contestants
+                                .First(y => y.Guid == result.FirstContestantScore.ContestantGuid).Name
                                 .ToString(),
-                            result.SecondContestantResult.ContestantGuid,
-                            db.Contestants.First(y => y.Guid == result.SecondContestantResult.ContestantGuid).Name
+                            result.SecondContestantScore.ContestantGuid,
+                            ratingSystem.ContestantsDb.Contestants
+                                .First(y => y.Guid == result.SecondContestantScore.ContestantGuid).Name
                                 .ToString(),
-                            result.FirstContestantResult.Score,
-                            result.SecondContestantResult.Score,
+                            result.FirstContestantScore.Score,
+                            result.SecondContestantScore.Score,
                             scoreDeltas.FirstContestantDelta,
                             scoreDeltas.SecondContestantDelta,
                             scoreDeltas.FirstContestantInitialScore,
-                            scoreDeltas.SecondContestantInitialScore);
+                            scoreDeltas.SecondContestantInitialScore,
+                            gameStatistics.FirstContestantWins,
+                            gameStatistics.SecondContestantWins,
+                            gameStatistics.FirstContestantScore,
+                            gameStatistics.SecondContestantScore);
                     }))
                 .Switch()
                 .Filter(FilterViewModel.GetFilter())
                 .Sort(this.WhenAnyValue(x => x.SelectedSortViewModel)
                     .Select(x => x.GetObservable())
                     .Switch())
+                .Publish();
+
+            _pagesCount = CountEx.Count(gameResultsShared)
+                .Select(count =>
+                {
+                    var pages = count / GameResultsOnPage;
+                    if (pages == 0) return 1;
+                    return count % GameResultsOnPage != 0
+                        ? pages + 1
+                        : pages;
+                })
+                .ToProperty(this, nameof(PagesCount));
+            CurrentPage = 1;
+
+            NextPage = ReactiveCommand.Create(() => { CurrentPage += 1; },
+                this.WhenAnyValue(
+                    x => x.CurrentPage,
+                    x => x.PagesCount,
+                    (page, count) => page < count - 1));
+
+            PreviousPage = ReactiveCommand.Create(() => { CurrentPage -= 1; },
+                this.WhenAnyValue(
+                    x => x.CurrentPage,
+                    page => page > 1));
+
+            gameResultsShared
+                .Page(this.WhenAnyValue(x => x.CurrentPage)
+                    .Select(page => new PageRequest(page, GameResultsOnPage)))
                 .Bind(out var gameResults)
                 .Subscribe();
             GameResults = gameResults;
-            AddGameResultViewModel = new AddGameResultViewModel(gamesDb);
+            AddGameResultViewModel = new AddGameResultViewModel(
+                ratingSystemObservable.Select(x => x.GamesDb),
+                ratingSystemObservable.Select(x => x.ContestantsDb));
+
+            gameResultsShared.Connect();
 
             this.WhenActivated(cleanUp =>
             {
@@ -75,6 +136,17 @@ namespace TableTennis.ViewModels
 
         public AddGameResultViewModel AddGameResultViewModel { get; }
 
+        private readonly ObservableAsPropertyHelper<int> _pagesCount;
+
+        public int PagesCount => _pagesCount.Value;
+
+        [Reactive] public int CurrentPage { get; private set; }
+
+        public ReactiveCommand<Unit, Unit> NextPage { get; }
+        public ReactiveCommand<Unit, Unit> PreviousPage { get; }
+
+        public const int GameResultsOnPage = 50;
+
         public ReadOnlyObservableCollection<GameResultReadViewModel> GameResults { get; }
 
         public FilterGameResultsViewModel FilterViewModel { get; }
@@ -87,14 +159,9 @@ namespace TableTennis.ViewModels
 
         public override string Name { get; } = "Матчи";
 
-        public IEnumerable<SortViewModel<GameResultReadViewModel>> SortViewModels { get; } = new[]
-        {
-            new SortViewModel<GameResultReadViewModel>("дате/времени матча", x => x.DateTime),
-            new SortViewModel<GameResultReadViewModel>("ФИО первого спортсмена", x => x.FirstContestantName),
-            new SortViewModel<GameResultReadViewModel>("ФИО второго спортсмена", x => x.SecondContestantName),
-        };
+        public SortViewModelsCollection SortViewModels { get; } = new();
 
-        IEnumerable<ISortViewModel> IHasSorting.SortViewModels => SortViewModels;
+        IEnumerable<ISortViewModel> IHasSorting.SortViewModels => SortViewModels.SortViewModels;
 
         [Reactive] public SortViewModel<GameResultReadViewModel> SelectedSortViewModel { get; set; }
 

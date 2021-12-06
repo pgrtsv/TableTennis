@@ -4,79 +4,123 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:TableTennis.Views"
              xmlns:viewModels="clr-namespace:TableTennis.ViewModels"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="TableTennis.Views.Contestants">
-    <DockPanel Grid.IsSharedSizeScope="True">
+    <DockPanel>
         <Border DockPanel.Dock="Top" Classes="menu">
             <WrapPanel>
                 <ToggleButton x:Name="AddToggleButton" Content="Добавить спортсмена" />
-                <ToggleButton x:Name="SortToggleButton" Content="Сортировать" />
+                <ToggleButton x:Name="PickDateToggleButton" Content="Дата начала службы" />
             </WrapPanel>
         </Border>
         <views:AddContestant x:Name="AddContestant" DockPanel.Dock="Top" />
-        <views:SortingPanel x:Name="SortingPanel" DockPanel.Dock="Top" />
+        <Border x:Name="BecamePrivateDateBorder" Classes="top_panel" DockPanel.Dock="Top">
+            <DatePicker x:Name="BecamePrivateDatePicker" />
+        </Border>
         <Border Classes="table_row" DockPanel.Dock="Top">
-            <Grid Classes="table_header">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="RatingPosition" />
-                    <ColumnDefinition SharedSizeGroup="Rank" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="Rating" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="GamesTotal" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="Wins" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="WTRatio" Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Рейтинг, №" />
-                <TextBlock Grid.Column="1" Text="Воинское звание" />
-                <TextBlock Grid.Column="2" Text="ФИО" />
-                <TextBlock Grid.Column="3" Text="Рейтинг" />
-                <TextBlock Grid.Column="4" Text="Сыграно матчей" />
-                <TextBlock Grid.Column="5" Text="Побед" />
-                <TextBlock Grid.Column="6" Text="Поражений" />
-                <TextBlock Grid.Column="7" Text="W/T" />
+            <Grid Classes="table_header" ColumnDefinitions="70,200,200,130,125,110,120,100,*">
+                <Border Grid.Column="0" Classes="cell">
+                    <ToggleButton x:Name="RatingPositionToggleButton" Content="№"
+                                  HorizontalAlignment="Center" />
+                </Border>
+                <Border Grid.Column="1" Classes="cell">
+                    <ToggleButton x:Name="RankToggleButton" Content="Звание" />
+                </Border>
+                <Border Grid.Column="2" Classes="cell">
+                    <ToggleButton x:Name="NameToggleButton" Content="ФИО" />
+                </Border>
+                <Border Grid.Column="3" Classes="cell">
+                    <ToggleButton x:Name="RatingToggleButton" Content="Рейтинг" />
+                </Border>
+                <Border Grid.Column="4" Classes="cell">
+                    <ToggleButton x:Name="GamesTotalToggleButton" Content="Матчей" />
+                </Border>
+                <Border Grid.Column="5" Classes="cell">
+                    <ToggleButton x:Name="WinsToggleButton" Content="Побед" />
+                </Border>
+                <Border Grid.Column="6" Classes="cell">
+                    <ToggleButton x:Name="LossesToggleButton" Content="Пораж." />
+                </Border>
+                <Border Grid.Column="7" Classes="cell">
+                    <ToggleButton x:Name="WTToggleButton" Content="W/T" />
+                </Border>
             </Grid>
         </Border>
         <ListBox x:Name="ContestantsListBox" Classes="contestants" VirtualizationMode="None">
+            <ListBox.Resources>
+                <Thickness x:Key="ListBoxItemPadding">0</Thickness>
+                <views:PositionToBrushConverter x:Key="PositionToBackgroundConverter" />
+                <views:PositionToBrushConverter x:Key="PositionToForegroundConverter"
+                                                CommonBrush="#000000"
+                                                FirstPlaceBrush="#ffffff"
+                                                SecondPlaceBrush="#ffffff"
+                                                ThirdPlaceBrush="#ffffff" />
+                <views:PositionToFontWeightConverter x:Key="PositionToFontWeightConverter" />
+                <views:PositionToBoolConverter x:Key="PositionToBoolConverter" />
+            </ListBox.Resources>
             <ListBox.Styles>
                 <Style Selector="TextBlock">
-                    <Setter Property="Margin" Value="5,0" />
+                    <Setter Property="FontWeight"
+                            Value="{Binding ScorePosition, Converter={StaticResource PositionToFontWeightConverter}}" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
             </ListBox.Styles>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="viewModels:ContestantReadViewModel">
-                    <Grid HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="RatingPosition" />
-                            <ColumnDefinition SharedSizeGroup="Rank" Width="Auto" />
-                            <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
-                            <ColumnDefinition SharedSizeGroup="Rating" Width="Auto" />
-                            <ColumnDefinition SharedSizeGroup="GamesTotal" Width="Auto" />
-                            <ColumnDefinition SharedSizeGroup="Wins" Width="Auto" />
-                            <ColumnDefinition SharedSizeGroup="Losses" Width="Auto" />
-                            <ColumnDefinition SharedSizeGroup="WTRatio" Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding ScorePosition}" />
-                        <TextBlock Grid.Column="1" 
-                                   Text="{Binding Contestant.Rank}"
-                                   Margin="0,0,5,0" />
-                        <TextBlock Grid.Column="2" Text="{Binding Contestant.Name}" />
-                        <TextBlock
-                            Grid.Column="3"
-                            Text="{Binding MonthlyScore}"
-                            Margin="5,0,0,0" />
-                        <TextBlock
-                            Grid.Column="4"
-                            Text="{Binding Statistics.GamesTotal}" />
-                        <TextBlock
-                            Grid.Column="5"
-                            Text="{Binding Statistics.Wins}" />
-                        <TextBlock
-                            Grid.Column="6"
-                            Text="{Binding Statistics.Losses}" />
-                        <TextBlock
-                            Grid.Column="7"
-                            Text="{Binding Statistics.WinTotalRatioPercentage, StringFormat=\{0:F1\}%}" />
+                    <Grid HorizontalAlignment="Stretch" ColumnDefinitions="70,200,200,130,125,110,120,100,*">
+                        <Border Classes="cell">
+                            <Panel>
+                                <avalonia:MaterialIcon
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="Trophy" Width="40" Height="40"
+                                    IsVisible="{Binding ScorePosition, 
+                                        Converter={StaticResource PositionToBoolConverter}}"
+                                    Foreground="{Binding ScorePosition, Converter={StaticResource PositionToBackgroundConverter}}" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ScorePosition}"
+                                    HorizontalAlignment="Center">
+                                    <TextBlock.IsVisible>
+                                        <Binding Path="ScorePosition"
+                                                 Converter="{StaticResource PositionToBoolConverter}">
+                                            <Binding.ConverterParameter>
+                                                <system:Boolean>True</system:Boolean>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </TextBlock.IsVisible>
+                                </TextBlock>
+                            </Panel>
+                        </Border>
+                        <Border Grid.Column="1" Classes="cell">
+                            <TextBlock
+                                Text="{Binding Contestant.Rank}" />
+                        </Border>
+                        <Border Grid.Column="2" Classes="cell">
+                            <TextBlock Text="{Binding Contestant.Name}" />
+                        </Border>
+                        <Border Grid.Column="3" Classes="cell">
+                            <TextBlock
+                                Text="{Binding Rating}" />
+                        </Border>
+                        <Border Grid.Column="4" Classes="cell">
+                            <TextBlock
+                                Text="{Binding Statistics.GamesTotal}" />
+                        </Border>
+                        <Border Grid.Column="5" Classes="cell">
+                            <TextBlock
+                                Text="{Binding Statistics.Wins}" />
+                        </Border>
+                        <Border Grid.Column="6" Classes="cell">
+                            <TextBlock
+                                Text="{Binding Statistics.Losses}" />
+                        </Border>
+                        <Border Grid.Column="7" Classes="cell">
+                            <TextBlock
+                                Text="{Binding WinTotalRatioPercentage}" />
+                        </Border>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
